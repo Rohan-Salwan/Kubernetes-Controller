@@ -1,0 +1,96 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.14.0
+  name: clusterscans.api.core.scan.io
+spec:
+  group: api.core.scan.io
+  names:
+    kind: ClusterScan
+    listKind: ClusterScanList
+    plural: clusterscans
+    singular: clusterscan
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ClusterScan is the Schema for the clusterscans API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ClusterScanSpec defines the desired state of ClusterScan
+            properties:
+              jobs:
+                items:
+                  properties:
+                    jobType:
+                      type: string
+                    name:
+                      type: string
+                    parameters:
+                      additionalProperties:
+                        type: string
+                      type: object
+                    recurrence:
+                      type: string
+                    schedule:
+                      type: string
+                  required:
+                  - jobType
+                  - name
+                  - parameters
+                  - recurrence
+                  - schedule
+                  type: object
+                type: array
+            required:
+            - jobs
+            type: object
+          status:
+            description: ClusterScanStatus defines the observed state of ClusterScan
+            properties:
+              jobsStatus:
+                description: |-
+                  INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
+                  Important: Run "make" to regenerate code after modifying this file
+                items:
+                  properties:
+                    executionStatus:
+                      type: string
+                    jobId:
+                      type: string
+                    name:
+                      type: string
+                  required:
+                  - executionStatus
+                  - jobId
+                  - name
+                  type: object
+                type: array
+            required:
+            - jobsStatus
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

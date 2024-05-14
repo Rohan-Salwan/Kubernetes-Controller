@@ -1,0 +1,32 @@
+apiVersion: api.core.scan.io/v1alpha1
+kind: ClusterScan
+metadata:
+  labels:
+    app.kubernetes.io/name: kubernetes-controller
+    app.kubernetes.io/managed-by: kustomize
+  name: clusterscan-sample
+spec:
+  jobs: 
+    - name: sayhelloworld
+      jobType : "hello world"
+      parameters:
+        cmd: "hello world"
+        image: "busybox:1.28"
+      recurrence: "daily"
+      schedule: "*/1 * * * *"
+    - name: saybyeworld
+      jobType: "bye-world"
+      parameters:
+        cmd: "bye-world"
+        image: "busybox:1.28"
+      recurrence: "weekly"
+      schedule: "*/1 * * * *"
+status:
+  jobsStatus:
+    - name: say-hello world
+      jobId: "hello-world-job-12345"
+      executionStatus: "pending"
+    - name: say-bye-world
+      jobId: "say-bye-world-job-67890"
+      executionStatus: "pending"
+
