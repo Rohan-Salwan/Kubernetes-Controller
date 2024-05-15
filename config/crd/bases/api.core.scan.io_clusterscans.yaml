@@ -62,32 +62,24 @@ spec:
                   - schedule
                   type: object
                 type: array
-            required:
-            - jobs
-            type: object
-          status:
-            description: ClusterScanStatus defines the observed state of ClusterScan
-            properties:
-              jobsStatus:
-                description: |-
-                  INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-                  Important: Run "make" to regenerate code after modifying this file
+              results:
                 items:
                   properties:
-                    executionStatus:
-                      type: string
-                    jobId:
-                      type: string
                     name:
                       type: string
+                    status:
+                      type: string
                   required:
-                  - executionStatus
-                  - jobId
                   - name
+                  - status
                   type: object
                 type: array
             required:
-            - jobsStatus
+            - jobs
+            - results
+            type: object
+          status:
+            description: ClusterScanStatus defines the observed state of ClusterScan
             type: object
         type: object
     served: true

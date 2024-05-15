@@ -30,7 +30,8 @@ type ClusterScanSpec struct {
 
 	// Foo is an example field of ClusterScan. Edit clusterscan_types.go to remove/update
 
-	Jobs []Job `json:"jobs"`
+	Jobs    []Job             `json:"jobs"`
+	Results []ExecutionResult `json:"results"`
 }
 
 type Job struct {
@@ -41,17 +42,16 @@ type Job struct {
 	Schedule   string            `json:"schedule"`
 }
 
+type ExecutionResult struct {
+	Name   string `json:"name"`
+	Status string `json:"status"`
+	// Add other fields as needed
+}
+
 // ClusterScanStatus defines the observed state of ClusterScan
 type ClusterScanStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
-	JobsStatus []JobStatus `json:"jobsStatus"`
-}
-
-type JobStatus struct {
-	Name            string `json:"name"`
-	JobID           string `json:"jobId"`
-	ExecutionStatus string `json:"executionStatus"`
 }
 
 //+kubebuilder:object:root=true

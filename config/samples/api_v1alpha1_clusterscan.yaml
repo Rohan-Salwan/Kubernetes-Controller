@@ -21,12 +21,8 @@ spec:
         image: "busybox:1.28"
       recurrence: "weekly"
       schedule: "*/1 * * * *"
-status:
-  jobsStatus:
-    - name: say-hello world
-      jobId: "hello-world-job-12345"
-      executionStatus: "pending"
-    - name: say-bye-world
-      jobId: "say-bye-world-job-67890"
-      executionStatus: "pending"
-
+  results:
+    - name: "sayhelloworld"
+      status: "pending"
+    - name: "saybyeworld"
+      status: "pending"

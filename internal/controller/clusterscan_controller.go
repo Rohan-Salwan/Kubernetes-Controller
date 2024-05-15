@@ -18,7 +18,6 @@ package controller
 
 import (
 	"context"
-
 	apiv1alpha1 "github.com/clusterscan/kubernetes-controller.git/api/v1alpha1"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -51,7 +50,6 @@ type ClusterScanReconciler struct {
 func (r *ClusterScanReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
-	// TODO(user): your logic here
 	clusterscans := &apiv1alpha1.ClusterScan{}
 	err := r.Get(ctx, client.ObjectKey{
 		Namespace: req.Namespace,
@@ -60,11 +58,20 @@ func (r *ClusterScanReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 	if err != nil {
 		return ctrl.Result{}, err
 	}
-	for _, job := range clusterscans.Spec.Jobs {
-		cronjob := CreateCronJobTemplate(job.Name, job.Parameters["image"], job.Parameters["cmd"], job.Schedule)
-		if err := r.Create(context.Background(), cronjob); err != nil {
-			return ctrl.Result{}, err
+
+	for index, job := range clusterscans.Spec.Jobs {
+		if (clusterscans.Spec.Results[index].Status == "pending") && (clusterscans.Spec.Results[index].Name == job.Name) {
+			cronjob := CreateCronJobTemplate(job.Name, job.Parameters["image"], job.Parameters["cmd"], job.Schedule)
+			if err := r.Create(context.Background(), cronjob); err != nil {
+				return ctrl.Result{}, err
+			}
+			clusterscans.Spec.Results[index].Status = "created"
 		}
+
+	}
+
+	if err := r.Update(ctx, clusterscans); err != nil {
+		return ctrl.Result{}, err
 	}
 
 	return ctrl.Result{}, nil
